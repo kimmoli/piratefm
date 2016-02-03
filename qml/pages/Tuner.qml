@@ -89,7 +89,7 @@ Page
                     icon.source: "image://theme/icon-m-favorite"
                     onClicked:
                     {
-                        stations.add({"frequency": radio.frequency, "stationId": radio.radioData.stationName})
+                        stations.add({"frequency": radio.frequency, "station": radio.radioData.stationName})
                     }
                 }
             }
@@ -117,14 +117,16 @@ Page
                 model: stations
                 delegate: ListItem
                 {
-                    height: Theme.itemSizeSmall
+                    contentHeight: Theme.itemSizeSmall
                     width: parent.width
+                    menu: contextmenu
+
                     Label
                     {
                         anchors.left: parent.left
                         anchors.leftMargin: Theme.paddingMedium
                         anchors.verticalCenter: parent.verticalCenter
-                        text: stationId
+                        text: station
                     }
                     Label
                     {
@@ -135,6 +137,32 @@ Page
                         font.bold: true
                     }
                     onClicked: radio.frequency = frequency
+
+                    Component
+                    {
+                        id: contextmenu
+                        ContextMenu
+                        {
+                            MenuItem
+                            {
+                                text: "Delete"
+                                onClicked: remove()
+                            }
+                        }
+                    }
+
+                    function remove()
+                    {
+                        remorseAction("Deleting", function()
+                        {
+                            var db = opendb()
+                            db.transaction(function(x)
+                            {
+                                x.executeSql("DELETE FROM favourites WHERE id=?",[ stations.get(index).id ])
+                            })
+                            stations.reload()
+                        })
+                    }
                 }
             }
         }

@@ -16,7 +16,7 @@ License:    LICENSE
 URL:        https://github.com/kimmoli/piratefm
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   sailfishsilica-qt5 >= 0.10.9
-Requires:   qt5-qtdeclarative-import-xmllistmodel
+Requires:   qt5-qtdeclarative-import-localstorageplugin
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Core)
